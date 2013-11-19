@@ -1,0 +1,37 @@
+.racer {
+	width:40px;
+	height:40px;
+	border:1px solid grey;
+	float:left;
+	margin-right:5px;
+}
+
+.bib {
+	width:40px;
+	height:40px;
+	border:1px solid grey;
+	margin-right:5px;
+	float:left;
+}
+
+.assignment {
+	width:40px;
+	height:100px;
+	border:2px solid grey;
+	float:left;
+	margin-right:10px;
+}
+
+/*-------------------------------------------------------------------------------------------------
+Name of Race
+-------------------------------------------------------------------------------------------------*/
+#race-title-output {	
+	text-align:center;
+	font-size:30px;
+	width:100%;
+	position:absolute;
+	top:150px;
+}
+
+.error {
+	color:red;

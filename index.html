@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<title>Ski Team Roster and Race Results</title>
+	
+	<link rel="stylesheet" href="css/main.css" type="text/css">
+	<link rel="stylesheet" href="css/features.css" type="text/css">
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+</head>
+
+
+<body>
+
+<div id='wrapper'>
+
+	<h1>Ski Team Roster Builder and Race Result Tracker</h1>
+
+	<!-- Left side with all the controls -->
+	<div id='controls'>
+
+		<!-- Select Location -->
+		<p>Location<br>
+			<!-- The input element must be followed by the label element, do not put another line in between -->
+			<input type="radio" class="site" name="site" id="Ragged">
+			<label for='Ragged'>Ragged Mountain</label><br>
+				<input type="radio" class="site" name="site" id="BlueHills">
+			<label for='BlueHills'>Blue Hills</label><br>
+		</p>
+
+		<!-- Select Race Type -->
+		<p>Race<br>
+			<!-- The input element must be followed by the label element, do not put another line in between -->
+			<input type="radio" class="racetype" name="racetype" id="Slalom">
+			<label for='Ragged'>Slalom</label><br>
+				<input type="radio" class="racetype" name="racetype" id="GS">
+			<label for='BlueHills'>GS</label><br>
+		</p>
+
+		<!-- Select Gender -->
+		<p>Gender<br>
+			<!-- The input element must be followed by the label element, do not put another line in between -->
+			<input type="radio" class="gender" name="sex" id="boys">
+			<label for='Boys'>Boys</label><br>
+	 		<input type="radio" class="gender" name="sex" id="boys">
+			<label for='Girls'>Girls</label><br>
+		</p>
+
+		<p>School<br>
+			<select class="team" name="school">
+				<option value="Natick">Natick</option>
+				<option value="BC High">BC High</option>
+			</select>
+		</p>
+
+		<!-- Select Race Date -->	
+		<p>Date:<br>
+			<input type='text' id='datepicker'/>
+		</p>
+
+		<!-- Racer board -->
+		<h2>Racers</h2>
+		<div id='racers'></div>
+		<div class='clearfix'></div>
+
+		<!-- Bib number board -->
+		<h2>Available bib numbers</h2>
+		<div id='bibs'></div>
+		<div class='clearfix'></div>
+
+		<input type='button' id='racer-bib' value="Set racer to bib">
+		<!-- Assignment board -->
+		<h2>Assignments</h2>
+		<div id='pairs'></div>
+		<div class='clearfix'></div>
+
+		<input type='button' id='preview-roster' value="Preview Roster">
+		
+	</div>
+	
+	<!-- Right side with the live preview -->
+	<div id='preview'>
+		<div id='canvas'>
+			<div id='title-report'>Title</div>
+
+		    <div id='message-output'></div>
+
+		</div>
+		
+  	  <!-- Buttons -->
+	  <input type='button' id='refresh-btn' value='Start over'>
+	  <input type='button' id='print-btn' value='Export'>
+	</div>
+	
+</div>
+
+<script src="js/roster.js"></script>
+
+<script>
+	var bibStart = 100;  
+
+	// tbd: set bibStart based on gender selection
+
+	// get racer names from a file or input from a form, hardcode it here first
+	var racerNames = ["Amy", "Beth", "Carol", "Donna", "Ellen",
+					  "Frances", "Gail", "Hannah", "Isabel", "Jessica"];
+
+	Roster.setup("racers", "bibs", racerNames, bibStart, 10);
+</script>
+
+</body>
+
+</html>

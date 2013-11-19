@@ -1,0 +1,52 @@
+/*-------------------------------------------------------------------------------------------------
+Layout
+-------------------------------------------------------------------------------------------------*/
+#wrapper {
+	width:960px;
+	margin:0px auto;
+}
+
+/* Left column */
+#controls {
+	width:425px;
+	margin-right:50px;
+	float:left;
+}
+
+/* Right column */
+#preview {
+	width:400px;
+	float:left;
+	text-align:center;
+        border:1px solid black;
+}
+
+
+/*-------------------------------------------------------------------------------------------------
+Roster
+-------------------------------------------------------------------------------------------------*/
+
+#background-container {
+
+	background-repeat:no-repeat;
+	height:513px;
+	width:369px;
+	margin:0px auto;
+}
+
+#canvas {
+
+	width:338px;
+	height:469px;
+	position:relative;
+	top:33px;
+	left:16px;
+	z-index:1; /* So we can place the stickers above */
+	overflow:hidden;
+}
+
+.clearfix:after {
+  content: "";
+  display: table;
+  clear: both;
+}
