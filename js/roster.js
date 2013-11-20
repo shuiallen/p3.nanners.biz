@@ -26,7 +26,7 @@ $('.gender').click(function() {
 	 var label = radio_button.next();
 
 	 // Now that we know the label, grab the text inside of it (That's our message!)
-	 gender = label.html();	
+	 gender = label.html();
 });
 
 /*-------------------------------------------------------------------------------------------------
@@ -41,7 +41,7 @@ $('.site').click(function() {
 	 var label = radio_button.next();
 
 	 // Now that we know the label, grab the text inside of it
-	 site = label.html();	
+	 site = label.html();
 });
 
 /*-------------------------------------------------------------------------------------------------
@@ -56,7 +56,7 @@ $('.racetype').click(function() {
 	 var label = radio_button.next();
 
 	 // Now that we know the label, grab the text inside of it 
-	 racetype = label.html();	
+	 racetype = label.html();
 });
 
 /*-------------------------------------------------------------------------------------------------
@@ -174,7 +174,7 @@ var Roster = {
 		}
 		for(var i in bibsArr) {
 			bibsStr = bibsStr + bibsArr[i];
-		}				
+		}
 		for (var i = bibStart; i < bibStart+numRacers; i++)	 {
 			pairStr = pairStr + bibAssignment[i];
 		}
@@ -183,7 +183,7 @@ var Roster = {
 		this.racers.html(racersStr);
 		this.bibs.html(bibsStr);
 		this.pairs.html(pairStr);
-	
+
 		// Setup click handlers
 		$('.racer').on('click', function() {
 			Roster.select_it($(this), 'racer', 'red');
@@ -283,7 +283,7 @@ var Roster = {
 			Obj.css('border', '3px solid ' + color);
 			// set the chosen to the selected racer
 			chosen = Obj;
-			
+
 		}
 		if (objType=='bib')
 			bibPick = chosen;
