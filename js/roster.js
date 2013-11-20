@@ -164,7 +164,7 @@ var Roster = {
 			bibsArr[i] = "<div class='bib clickable' id='bibNum" + bibNum + "'>" + bibNum + "</div>";
 
 			// Index the bibAssignment by bibNum so we can find the assignment more easily
-			bibAssignment[bibNum] = "<div class='assignment clickable' id='assign" + bibNum + "'></div>";
+			bibAssignment[bibNum] = "<div class='assignment' id='assign" + bibNum + "'></div>";
 			bibNum++;
 		}
 
@@ -225,9 +225,9 @@ var Roster = {
 				console.log($(this).children().length);
 
 				if ($(this).children().length > 0) {
-				    var thisRacer = $(this).find(".racer").html();
-				    var thisBib   = $(this).find(".bib").html();
-				    $('#roster-table > tbody').append("<tr><td>" + thisBib + "</td><td>" + thisRacer + "</td></tr>");
+					var thisRacer = $(this).find(".racer").html();
+					var thisBib   = $(this).find(".bib").html();
+					$('#roster-table > tbody').append("<tr><td>" + thisBib + "</td><td>" + thisRacer + "</td></tr>");
 				}
 			});
 
@@ -237,7 +237,6 @@ var Roster = {
 				$('#roster-table').dataTable();
 		    });*/
 		});
-
 
 		// $( ".assignment" ).droppable({
 		// 	accept: function(d) { 
@@ -303,22 +302,24 @@ var Roster = {
 		// clone the chosen ones and change their ids
 		var racerChosen = racerObj.clone().attr('id', "clone-" + racerId);
 		var bibChosen   =   bibObj.clone().attr('id', "clone-" + bibId);
+		racerChosen.removeClass('clickable');
+		bibChosen.removeClass('clickable');
 
 		var racerStr = "<div class='racer' id=" + racerId + "'>" + racerId + "</div>";
 		var	bibStr   = "<div class='bib' id="   + bibId   + "'>" + bibId + "</div>";
+		var removeButton = "<input type='button' class='remove-pair clickable' value='Remove'>";
 
 		// TBD : decide if we need to change the class on the clones to make them retrievable
 		// racerChosen.addClass('stickers_on_card');
 
 		// Setup for the assignment div
+		// TBD - need to change this to find an open slot
 		var assignId = "#assign" + assignCount;
 		assignCount++;
 
-/*		var assigned = "<div class='assignment clickable' id=" + assignId + "'></div>";
-		console.log(assigned);*/
-
 		// Inject the new image into the canvas
 		//$('#pairs').prepend(assigned);
+		$(assignId).prepend(removeButton);
 		$(assignId).prepend(bibChosen);
 		$(assignId).prepend(racerChosen);
 
@@ -331,6 +332,38 @@ var Roster = {
 		// Clear the picks
 		racerPick = null;
 		bibPick = null;
+
+		// Event handler for the remove assignment
+		$('.remove-pair').on("click", function() {
+
+			console.log('removing');
+			console.log($(this));
+			var assignDiv = $(this).parent();
+			console.log(assignDiv);
+			var pair   = $(this).siblings();
+			console.log($(pair));
+			var BibId;
+			var RacerId;
+			$(pair).each(function () {
+				if ($(this).hasClass('racer')) {
+					racerId = $(this).attr('id');
+					racerId = racerId.split('-')[1];
+
+				}
+				if ($(this).hasClass('bib')){
+					bibId = $(this).attr('id');
+					bibId = bibId.split('-')[1];
+				}
+			});
+
+			assignDiv.empty();
+			console.log(racerId);
+			console.log(bibId);
+			racerPick = $('#' + racerId);
+			bibPick = $('#' + bibId);
+			$('#' + racerId).fadeIn(300);
+			$('#' + bibId).fadeIn(300);
+		});
 	}
 
 
