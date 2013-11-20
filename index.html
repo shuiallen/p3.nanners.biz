@@ -6,9 +6,13 @@
 	
 	<link rel="stylesheet" href="css/main.css" type="text/css">
 	<link rel="stylesheet" href="css/features.css" type="text/css">
+	<style type="text/css" title="currentStyle">
+	  @import "/DataTables/media/css/demo_table.css";
+	</style>
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="/DataTables/media/js/jquery.dataTables.js"></script>
 </head>
 
 
@@ -71,6 +75,8 @@
 		<div class='clearfix'></div>
 
 		<input type='button' id='racer-bib' value="Set racer to bib">
+		<span class='error' id='assign-error'></span>
+
 		<!-- Assignment board -->
 		<h2>Assignments</h2>
 		<div id='pairs'></div>
@@ -85,7 +91,21 @@
 		<div id='canvas'>
 			<div id='title-report'>Title</div>
 
-		    <div id='message-output'></div>
+		    <div id='roster-table-section'>
+			    <table id="roster-table" class="display" >
+				    <thead>
+						<tr>
+							<th>Bib Number</th>
+							<th>Racer</th>
+							<th>Time</th>
+						</tr>
+				    </thead>
+				    <tbody id='roster-table-body'>
+
+				    </tbody>
+			    </table>
+
+		    </div>
 
 		</div>
 		

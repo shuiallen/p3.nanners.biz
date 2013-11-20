@@ -6,8 +6,13 @@ var racetype ="";
 var site = "";
 var school = "";
 
+// current choices
 var racerPick;
 var bibPick;
+
+// Roster parameters
+var assignCount = 0;
+var assignLimit = 0;
 
 /*-------------------------------------------------------------------------------------------------
 Gender
@@ -116,8 +121,8 @@ $('#preview-roster').click(function() {
 *  Extra: Export the roster with race times to a csv
 *
 */
-// An array indexed by bib number, each entry contains the racer name
-var bibAssignment = [];
+
+
 
 var Roster = {
 
@@ -130,7 +135,11 @@ var Roster = {
 	bibSelected: 0,
 
 	setup: function(id_of_racers, id_of_bibs, racerNames, bibStart, numRacers) {
-		// First, identify the board and the scoreboard objects
+		// Keep track of what needs to be assigned
+		assignCount = bibStart;
+		assignLimit = numRacers;
+
+		// Setup the boards - racers, bibs, assignment pairs
 		this.racers = $('#' + id_of_racers);
 		this.bibs   = $('#' + id_of_bibs);
 		this.pairs = $('#pairs');
@@ -138,10 +147,12 @@ var Roster = {
 		// Strings to hold the racer and bib divs
 		var racersStr = String();
 		var bibsStr = String();
-		var assignStr = String();
+		var pairStr = String();
 
 		var racersArr = [];
 		var bibsArr = [];
+		// Build a board to hold the assignments
+		var bibAssignment = [];
 
 		// Loop over bib numbers starting with BibStart for numRacers
 		bibNum = bibStart;
@@ -150,50 +161,83 @@ var Roster = {
 			// Initialize the racer and bib cards
 			// add draggable to class here if dragging to match
 			racersArr[i] = "<div class='racer clickable' id='racer" + i + "'>" + racerNames[i] + "</div>"
-
 			bibsArr[i] = "<div class='bib clickable' id='bibNum" + bibNum + "'>" + bibNum + "</div>";
-			bibAssignment[bibNum] = "<div class='assignment' id='assign" + bibNum + "'></div>";
-			console.log(bibAssignment[bibNum]);
-			bibNum++;
-			console.log(bibsArr[i]);
 
+			// Index the bibAssignment by bibNum so we can find the assignment more easily
+			bibAssignment[bibNum] = "<div class='assignment clickable' id='assign" + bibNum + "'></div>";
+			bibNum++;
 		}
 
-		// Now load the each array into respective strings
+		// load each array of objects into respective strings
 		for(var i in racersArr) {
 			racersStr = racersStr + racersArr[i];
 		}
 		for(var i in bibsArr) {
 			bibsStr = bibsStr + bibsArr[i];
-							console.log("got here " + bibsStr);
 		}				
 		for (var i = bibStart; i < bibStart+numRacers; i++)	 {
-			console.log(bibAssignment[i]);
-			assignStr = assignStr + bibAssignment[i];
-			console.log("got here " + assignStr);
+			pairStr = pairStr + bibAssignment[i];
 		}
 
-		console.log("after loop " + assignStr);
-
-
-		console.log("got here 1");
 		// Now inject each string into its board
 		this.racers.html(racersStr);
-		console.log("got here 2");
 		this.bibs.html(bibsStr);
-		console.log("got here 3");
-
-		this.pairs.html(assignStr);
+		this.pairs.html(pairStr);
 	
-		console.log("got here 4");
-		console.log("pairs:");
-		console.log(this.pairs);
-		console.log("end pairs");
-
+		// Setup click handlers
 		$('.racer').on('click', function() {
-	
-			Roster.select_a_racer($(this));
+			Roster.select_it($(this), 'racer', 'red');
 		});
+
+		$('.bib').on('click', function() {
+			Roster.select_it($(this), 'bib', 'blue');
+		});
+
+		$('#racer-bib').click(function() {
+			var err1 = false;
+			var err2 = false;
+			console.log(racerPick);
+			console.log(bibPick);
+			if (jQuery.isEmptyObject(racerPick))
+				err1 = true;
+			if (jQuery.isEmptyObject(bibPick))
+				err2 = true;
+			if (err1 && err2)
+				$('#assign-error').html("Pick a racer and a bib number");
+			else if (err1 || err2) {
+				if (err1)
+					$('#assign-error').html("Pick a racer too");
+				else
+					$('#assign-error').html("Pick a bib too");
+			} else {
+				console.log("assign it");
+				Roster.assign_a_bib(racerPick, bibPick);
+			}
+		});
+
+		$('#preview-roster').click(function() {
+			// Clear table previously displayed
+			$('#roster-table > tbody').empty();
+
+			// Iterate over the bib assignment divs to insert rows in the table body
+			$('#pairs').children('div').each(function () {
+				console.log("entry in bib assignment div");
+				console.log($(this).children().length);
+
+				if ($(this).children().length > 0) {
+				    var thisRacer = $(this).find(".racer").html();
+				    var thisBib   = $(this).find(".bib").html();
+				    $('#roster-table > tbody').append("<tr><td>" + thisBib + "</td><td>" + thisRacer + "</td></tr>");
+				}
+			});
+
+			// Use DataTable to display table nicely
+			// TBD/Defect : sorting on the columns in the DataTable table loses the data ?
+/*		    $(document).ready( function () {
+				$('#roster-table').dataTable();
+		    });*/
+		});
+
 
 		// $( ".assignment" ).droppable({
 		// 	accept: function(d) { 
@@ -209,60 +253,84 @@ var Roster = {
 	 //      }
 	 //    });
 
-		$('.bib').on('click', function() {
-			Roster.select_a_bib($(this.bibs));
-		});
-
 	// },
 
 
 	},  // end of function
 
-	select_a_racer: function(racerObj) {
-		if (!jQuery.isEmptyObject(racerPick)) {
-			console.log("racer pick is not empty");
+	select_it: function(Obj, objType, color) {
+		var chosen;
+		console.log(objType);
+		if (objType=='bib')
+			chosen = bibPick;
+		else
+			chosen = racerPick;
+		if (!jQuery.isEmptyObject(chosen)) {
 			// deselect the current chosen one
-			racerPick.css('border', '1px solid grey');
-			console.log(racerPick);
-			console.log(racerObj);
+			chosen.css('border', '1px solid grey');
 
-			if (racerPick.attr('id') == racerObj.attr('id')) {
-				console.log("racer pick is the same as the selected one");
+			if (chosen.attr('id') == Obj.attr('id')) {
 				// user selected the highlighted one, so remove the pick
-				racerPick = $();
+				chosen = null;
 			} else {
-				console.log("set and highlight");
 				// highlight this object
-				racerObj.css('border', '3px solid red');
-				// set the racerPick to the selected racer
-				racerPick = racerObj;
+				Obj.css('border', '3px solid ' + color);
+				// set the chosen to the selected racer
+				chosen = Obj;
 			}
 		} else {
-			console.log("set and highlight");
 			// highlight this object
-			racerObj.css('border', '3px solid red');
-			// set the racerPick to the selected racer
-			racerPick = racerObj;
-			// racerObj.fadeOut(300);
+			Obj.css('border', '3px solid ' + color);
+			// set the chosen to the selected racer
+			chosen = Obj;
+			
 		}
+		if (objType=='bib')
+			bibPick = chosen;
+		else
+			racerPick = chosen;
 	},
 
-	select_a_bib: function(bibObj) {
-		if (!jQuery.isEmptyObject(bibPick)) {
-			// deselect the current chosen one
-			bibPick.css('border', '1px solid grey');
-		}
-		
-		// highlight this object
-		bibObj.css('border', '3px solid red');
-		// set the bibPick to the selected bib
-		bibPick = bibObj;
-		// racerObj.fadeOut(300);
-
-	},
 
 	assign_a_bib: function(racerObj, bibObj) {
 
+		// Clear any error message
+		$('#assign-error').html("");
+
+		var racerId = racerObj.attr('id');
+		var bibId   = bibObj.attr('id');
+
+		// clone the chosen ones and change their ids
+		var racerChosen = racerObj.clone().attr('id', "clone-" + racerId);
+		var bibChosen   =   bibObj.clone().attr('id', "clone-" + bibId);
+
+		var racerStr = "<div class='racer' id=" + racerId + "'>" + racerId + "</div>";
+		var	bibStr   = "<div class='bib' id="   + bibId   + "'>" + bibId + "</div>";
+
+		// TBD : decide if we need to change the class on the clones to make them retrievable
+		// racerChosen.addClass('stickers_on_card');
+
+		// Setup for the assignment div
+		var assignId = "#assign" + assignCount;
+		assignCount++;
+
+/*		var assigned = "<div class='assignment clickable' id=" + assignId + "'></div>";
+		console.log(assigned);*/
+
+		// Inject the new image into the canvas
+		//$('#pairs').prepend(assigned);
+		$(assignId).prepend(bibChosen);
+		$(assignId).prepend(racerChosen);
+
+		console.log(this.pairs);
+
+		// make the chosen ones disappear
+		racerObj.fadeOut(300);
+		bibObj.fadeOut(300);
+
+		// Clear the picks
+		racerPick = null;
+		bibPick = null;
 	}
 
 
