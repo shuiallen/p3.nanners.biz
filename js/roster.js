@@ -120,7 +120,13 @@ Undo Assignment
 -------------------------------------------------------------------------------------------------*/
 // Event handler for the remove assignment
 $('#remove-assignment').on("click", function() {
-	alert("clicked remove assignment");
+	// Clear any previous error message
+	$('#remove-error').html("");
+
+	if ((assignmentPick == undefined) ||jQuery.isEmptyObject(assignmentPick) ) {
+		$('#remove-error').html("Pick an assignment");
+		return;
+	}
 
 	console.log('removing');
 	console.log(assignmentPick);
@@ -146,9 +152,15 @@ $('#remove-assignment').on("click", function() {
 	racerPick = $('#' + racerId);
 	bibPick = $('#' + bibId);
 	$('#' + racerId).fadeIn(300);
+	$('#' + racerId).css('border', '1px solid grey');
 	$('#' + bibId).fadeIn(300);
+	$('#' + bibId).css('border', '1px solid grey');
 
 	assignmentPick.css('border', '2px solid grey');
+	assignmentPick.removeClass('assigned');
+	assignmentPick.addClass('unassigned');
+	assignmentPick = null;
+
 	console.log($('#pairs'));
 });
 
@@ -240,11 +252,11 @@ var Roster = {
 
 		// Setup click handlers to select a racer or a bib
 		$('.racer').on('click', function() {
-			Roster.select_it($(this), 'racer', 'red');
+			racerPick = Roster.select_it($(this), racerPick, '2px solid red', '1px solid grey');
 		});
 
 		$('.bib').on('click', function() {
-			Roster.select_it($(this), 'bib', 'blue');
+			bibPick = Roster.select_it($(this), bibPick, '2px solid blue', '1px solid grey');
 		});
 
 		$('#racer-bib').click(function() {
@@ -274,10 +286,7 @@ var Roster = {
 		Select an assignment
 		-------------------------------------------------------------------------------------------------*/
 		$('.assignment').click(function() {
-			alert("clicked an assignment");
-
-			$(this).css('border', '3px solid black');
-			assignmentPick = $(this);
+			assignmentPick = Roster.select_it($(this), assignmentPick, '3px solid green', '2px solid grey');
 		});
 
 
@@ -301,37 +310,29 @@ var Roster = {
 
 	},  // end of function
 
-	select_it: function(Obj, objType, color) {
-		var chosen;
-		console.log(objType);
-		if (objType=='bib')
-			chosen = bibPick;
-		else
-			chosen = racerPick;
+	select_it: function(Obj, chosen, select, deselect) {
+
 		if (!jQuery.isEmptyObject(chosen)) {
 			// deselect the current chosen one
-			chosen.css('border', '1px solid grey');
+			chosen.css('border', deselect);
 
 			if (chosen.attr('id') == Obj.attr('id')) {
 				// user selected the highlighted one, so remove the pick
 				chosen = null;
 			} else {
 				// highlight this object
-				Obj.css('border', '3px solid ' + color);
+				Obj.css('border', select);
 				// set the chosen to the selected racer
 				chosen = Obj;
 			}
 		} else {
 			// highlight this object
-			Obj.css('border', '3px solid ' + color);
+			Obj.css('border', select);
 			// set the chosen to the selected racer
 			chosen = Obj;
 
 		}
-		if (objType=='bib')
-			bibPick = chosen;
-		else
-			racerPick = chosen;
+		return chosen;
 	},
 
 
@@ -364,6 +365,9 @@ var Roster = {
 		// Inject the new image into the canvas
 		$(assignId).prepend(bibChosen);
 		$(assignId).prepend(racerChosen);
+
+		$(assignId).removeClass('unassigned');
+		$(assignId).addClass('assigned');
 
 		console.log(this.pairs);
 
