@@ -9,6 +9,7 @@ var school = "";
 // current choices
 var racerPick;
 var bibPick;
+var assignmentPick;
 
 // Roster parameters
 var assignCount = 0;
@@ -97,8 +98,59 @@ $('#preview-roster').click(function() {
 	console.log("title is " + title);
 	$('#title-report').html(title);
 
+	// Clear table previously displayed
+	$('#roster-table > tbody').empty();
+
+	// Iterate over the bib assignment divs to insert rows in the table body
+	$('#pairs').children('div').each(function () {
+		console.log("entry in bib assignment div");
+		console.log($(this).children().length);
+
+		if ($(this).children().length > 0) {
+			var thisRacer = $(this).find(".racer").html();
+			var thisBib   = $(this).find(".bib").html();
+			$('#roster-table > tbody').append("<tr><td>" + thisBib + "</td><td>" + thisRacer + "</td></tr>");
+		}
+	});
 });
 
+
+/*-------------------------------------------------------------------------------------------------
+Undo Assignment
+-------------------------------------------------------------------------------------------------*/
+// Event handler for the remove assignment
+$('#remove-assignment').on("click", function() {
+	alert("clicked remove assignment");
+
+	console.log('removing');
+	console.log(assignmentPick);
+	var pair   = assignmentPick.children();
+	console.log($(pair));
+	var BibId;
+	var RacerId;
+	$(pair).each(function () {
+		if ($(this).hasClass('racer')) {
+			racerId = $(this).attr('id');
+			racerId = racerId.split('-')[1];
+
+		}
+		if ($(this).hasClass('bib')){
+			bibId = $(this).attr('id');
+			bibId = bibId.split('-')[1];
+		}
+	});
+
+	assignmentPick.empty();
+	console.log(racerId);
+	console.log(bibId);
+	racerPick = $('#' + racerId);
+	bibPick = $('#' + bibId);
+	$('#' + racerId).fadeIn(300);
+	$('#' + bibId).fadeIn(300);
+
+	assignmentPick.css('border', '2px solid grey');
+	console.log($('#pairs'));
+});
 
 
 
@@ -108,11 +160,14 @@ $('#preview-roster').click(function() {
 *
 * Roster Board
 * @class Roster
-* @constructor setup_roster
+* @constructor setup
 *
 *  Setup the racer slots, bib numbers, assignment board
 *  Extra: Import a list of names into the roster
 *  Extra: Record both boys and girls roster on the same page
+*  Assign a racer to a bib number using a click event handler
+*  Extra:  try to use dragging - attempted but is not necessarily more intuitive what to drag to to make a pair
+*  Remove an assignment - put the racer and bib number back, un-highlighted
 *  Display the roster in a table
 *  Extra: Export the roster to a csv
 *  Extra: Import the roster from a csv, to be able to record race times
@@ -151,20 +206,19 @@ var Roster = {
 
 		var racersArr = [];
 		var bibsArr = [];
-		// Build a board to hold the assignments
 		var bibAssignment = [];
 
 		// Loop over bib numbers starting with BibStart for numRacers
 		bibNum = bibStart;
 
 		for (var i = 0; i < numRacers; i++)	 {
-			// Initialize the racer and bib cards
+			// Initialize the racer, bib and assignment cards
 			// add draggable to class here if dragging to match
 			racersArr[i] = "<div class='racer clickable' id='racer" + i + "'>" + racerNames[i] + "</div>"
 			bibsArr[i] = "<div class='bib clickable' id='bibNum" + bibNum + "'>" + bibNum + "</div>";
 
-			// Index the bibAssignment by bibNum so we can find the assignment more easily
-			bibAssignment[bibNum] = "<div class='assignment' id='assign" + bibNum + "'></div>";
+			// Index the bibAssignment by bibNum
+			bibAssignment[bibNum] = "<div class='assignment clickable unassigned' id='assign" + bibNum + "'></div>";
 			bibNum++;
 		}
 
@@ -184,7 +238,7 @@ var Roster = {
 		this.bibs.html(bibsStr);
 		this.pairs.html(pairStr);
 
-		// Setup click handlers
+		// Setup click handlers to select a racer or a bib
 		$('.racer').on('click', function() {
 			Roster.select_it($(this), 'racer', 'red');
 		});
@@ -215,28 +269,18 @@ var Roster = {
 			}
 		});
 
-		$('#preview-roster').click(function() {
-			// Clear table previously displayed
-			$('#roster-table > tbody').empty();
 
-			// Iterate over the bib assignment divs to insert rows in the table body
-			$('#pairs').children('div').each(function () {
-				console.log("entry in bib assignment div");
-				console.log($(this).children().length);
+		/*-------------------------------------------------------------------------------------------------
+		Select an assignment
+		-------------------------------------------------------------------------------------------------*/
+		$('.assignment').click(function() {
+			alert("clicked an assignment");
 
-				if ($(this).children().length > 0) {
-					var thisRacer = $(this).find(".racer").html();
-					var thisBib   = $(this).find(".bib").html();
-					$('#roster-table > tbody').append("<tr><td>" + thisBib + "</td><td>" + thisRacer + "</td></tr>");
-				}
-			});
-
-			// Use DataTable to display table nicely
-			// TBD/Defect : sorting on the columns in the DataTable table loses the data ?
-/*		    $(document).ready( function () {
-				$('#roster-table').dataTable();
-		    });*/
+			$(this).css('border', '3px solid black');
+			assignmentPick = $(this);
 		});
+
+
 
 		// $( ".assignment" ).droppable({
 		// 	accept: function(d) { 
@@ -318,8 +362,6 @@ var Roster = {
 		assignCount++;
 
 		// Inject the new image into the canvas
-		//$('#pairs').prepend(assigned);
-		$(assignId).prepend(removeButton);
 		$(assignId).prepend(bibChosen);
 		$(assignId).prepend(racerChosen);
 
@@ -333,37 +375,6 @@ var Roster = {
 		racerPick = null;
 		bibPick = null;
 
-		// Event handler for the remove assignment
-		$('.remove-pair').on("click", function() {
-
-			console.log('removing');
-			console.log($(this));
-			var assignDiv = $(this).parent();
-			console.log(assignDiv);
-			var pair   = $(this).siblings();
-			console.log($(pair));
-			var BibId;
-			var RacerId;
-			$(pair).each(function () {
-				if ($(this).hasClass('racer')) {
-					racerId = $(this).attr('id');
-					racerId = racerId.split('-')[1];
-
-				}
-				if ($(this).hasClass('bib')){
-					bibId = $(this).attr('id');
-					bibId = bibId.split('-')[1];
-				}
-			});
-
-			assignDiv.empty();
-			console.log(racerId);
-			console.log(bibId);
-			racerPick = $('#' + racerId);
-			bibPick = $('#' + bibId);
-			$('#' + racerId).fadeIn(300);
-			$('#' + bibId).fadeIn(300);
-		});
 	}
 
 
