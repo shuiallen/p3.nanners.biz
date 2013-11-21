@@ -112,6 +112,13 @@ $('#preview-roster').click(function() {
 			$('#roster-table > tbody').append("<tr><td>" + thisBib + "</td><td>" + thisRacer + "</td></tr>");
 		}
 	});
+
+	console.log($('#roster-table'));
+	// Use DataTable to display table nicely
+	// TBD/Defect : sorting on the columns in the DataTable table loses the data ?
+    $(document).ready( function () {
+		$('#roster-table').dataTable();
+	});
 });
 
 
@@ -128,8 +135,6 @@ $('#remove-assignment').on("click", function() {
 		return;
 	}
 
-	console.log('removing');
-	console.log(assignmentPick);
 	var pair   = assignmentPick.children();
 	console.log($(pair));
 	var BibId;
@@ -146,9 +151,7 @@ $('#remove-assignment').on("click", function() {
 		}
 	});
 
-	assignmentPick.empty();
-	console.log(racerId);
-	console.log(bibId);
+
 	racerPick = $('#' + racerId);
 	bibPick = $('#' + bibId);
 	$('#' + racerId).fadeIn(300);
@@ -156,9 +159,12 @@ $('#remove-assignment').on("click", function() {
 	$('#' + bibId).fadeIn(300);
 	$('#' + bibId).css('border', '1px solid grey');
 
+	// Clear out the assignment div - remove content, highlighting, and assignment class
+	assignmentPick.empty();
 	assignmentPick.css('border', '2px solid grey');
 	assignmentPick.removeClass('assigned');
 	assignmentPick.addClass('unassigned');
+	// Deselect the pick
 	assignmentPick = null;
 
 	console.log($('#pairs'));
@@ -352,24 +358,30 @@ var Roster = {
 
 		var racerStr = "<div class='racer' id=" + racerId + "'>" + racerId + "</div>";
 		var	bibStr   = "<div class='bib' id="   + bibId   + "'>" + bibId + "</div>";
-		var removeButton = "<input type='button' class='remove-pair clickable' value='Remove'>";
 
-		// TBD : decide if we need to change the class on the clones to make them retrievable
-		// racerChosen.addClass('stickers_on_card');
+		// Find the first available div in pairs
+		var availToAssign = $('#pairs').children(".unassigned").eq(0);
+		console.log("div to assign");
+		console.log(availToAssign);
 
 		// Setup for the assignment div
 		// TBD - need to change this to find an open slot
-		var assignId = "#assign" + assignCount;
-		assignCount++;
+		// var assignId = "#assign" + assignCount;
+		// assignCount++;
 
 		// Inject the new image into the canvas
-		$(assignId).prepend(bibChosen);
-		$(assignId).prepend(racerChosen);
+		// $(assignId).prepend(bibChosen);
+		// $(assignId).prepend(racerChosen);
 
-		$(assignId).removeClass('unassigned');
-		$(assignId).addClass('assigned');
+		// $(assignId).removeClass('unassigned');
+		// $(assignId).addClass('assigned');
+		$(availToAssign).prepend(bibChosen);
+		$(availToAssign).prepend(racerChosen);
 
-		console.log(this.pairs);
+		$(availToAssign).removeClass('unassigned');
+		$(availToAssign).addClass('assigned');
+
+		console.log($('#pairs'));
 
 		// make the chosen ones disappear
 		racerObj.fadeOut(300);
