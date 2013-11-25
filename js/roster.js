@@ -63,10 +63,7 @@ $('.racetype').click(function() {
 /*-------------------------------------------------------------------------------------------------
 Team / School 
 -------------------------------------------------------------------------------------------------*/
-$('.team').click(function() {
-	// This is not working either
-	console.log("got here");
-
+$('#team').click(function() {
 	// Dropdown value
 	school = $('#team').val();
 	console.log(school);
@@ -84,13 +81,30 @@ $("#datepicker").datepicker(
     }
 });
 
+
+/*-------------------------------------------------------------------------------------------------
+Print the Roster event handler
+-------------------------------------------------------------------------------------------------*/
+$('#export-table').click(function() {
+	alert('print-btn clicked');
+});
+
+
+// var myWindow = window.open("","MsgWindow","width=200,height=100");
+// myWindow.document.write($('#roster-table-section'));
+	
+
+$('#refresh-btn').click(function() {
+	alert('refresh-btn clicked');
+});
+
+
+
 /*-------------------------------------------------------------------------------------------------
 Preview Roster
 -------------------------------------------------------------------------------------------------*/
 $('#preview-roster').click(function() {
 
-	// TBD:  this is not working, how do you get the drop down value if the displayed on is the one you want
-	// click function is defined above
 	school = $('#team').val();
 	console.log(school);
 
@@ -181,7 +195,9 @@ $('#remove-assignment').on("click", function() {
 * @constructor setup
 *
 *  Setup the racer slots, bib numbers, assignment board
+*  Initial implementation : racer names and bib numbers are hardcoded
 *  Extra: Import a list of names into the roster
+*  Extra: Use formula for bib numbers based on school/gender/order {0-9}
 *  Extra: Record both boys and girls roster on the same page
 *  Assign a racer to a bib number using a click event handler
 *  Extra:  try to use dragging - attempted but is not necessarily more intuitive what to drag to to make a pair
@@ -192,6 +208,7 @@ $('#remove-assignment').on("click", function() {
 *  Submit race times for each racer/bib number
 *  Display the roster and race times in a table
 *  Extra: Export the roster with race times to a csv
+*  Extra: Collate rosters from several schools
 *
 */
 
