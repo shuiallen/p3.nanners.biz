@@ -6,13 +6,19 @@
 
 	<link rel="stylesheet" href="css/main.css" type="text/css">
 	<link rel="stylesheet" href="css/features.css" type="text/css">
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+
 	<style type="text/css" title="currentStyle">
-	  @import "/DataTables/media/css/demo_table.css";
+	  @import "js/DataTables/media/css/demo_table.css";
 	</style>
 
+	<!-- Remove 'https:' when running code from a server' -->
+	<!-- Currently using straight path to html file, so removing it won't work to find it -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
-	<script type="text/javascript" charset="utf-8" src="/DataTables/media/js/jquery.dataTables.js"></script>
+	<script type="text/javascript" charset="utf-8" src="js/DataTables/media/js/jquery.dataTables.js"></script>
+
+
 </head>
 
 
@@ -20,53 +26,95 @@
 
 <div id='wrapper'>
 
+
 	<h1>Ski Team Roster Builder and Race Result Tracker</h1>
 
+		<!-- Right side with the live preview -->
+	<div id='preview'>
+		<div id='canvas'>
+			<div id='title-report'>Title</div>
+
+		    <div id='roster-table-section'>
+			    <table id="roster-table" class="display" >
+				    <thead>
+						<tr>
+							<th>Bib Number</th>
+							<th>Racer</th>
+							<!-- <th>Time</th> -->
+						</tr>
+				    </thead>
+				    <tbody id='roster-table-body'>
+
+				    </tbody>
+			    </table>
+
+		    </div>
+		    <div id=preview-buttons>
+				<!-- Buttons -->
+				<input type='button' id='export-table' value='Export'>
+				<input type='button' id='close-preview' value='Close Preview'>
+				<input type='button' id='print-table' value='Print'>
+			</div>
+		</div>
+		
+
+	</div>
+
 	<!-- Left side with all the controls -->
-	<div id='controls'>
+	<div id='options'>
 
 		<!-- Select Location -->
-		<p>Location<br>
+		<h3>Location</h3>
+		<div class=option>
 			<!-- The input element must be followed by the label element, do not put another line in between -->
 			<input type="radio" class="site" name="site" id="Ragged">
 			<label for='Ragged'>Ragged Mountain</label><br>
 				<input type="radio" class="site" name="site" id="BlueHills">
 			<label for='BlueHills'>Blue Hills</label><br>
-		</p>
+		</div>
 
+		<h3>Race Type</h3>
 		<!-- Select Race Type -->
-		<p>Race<br>
+		<div class=option>
 			<!-- The input element must be followed by the label element, do not put another line in between -->
 			<input type="radio" class="racetype" name="racetype" id="Slalom">
-			<label for='Ragged'>Slalom</label><br>
-				<input type="radio" class="racetype" name="racetype" id="GS">
-			<label for='BlueHills'>GS</label><br>
-		</p>
+			<label for='slalom'>Slalom</label><br>
+			<input type="radio" class="racetype" name="racetype" id="GS">
+			<label for='GS'>GS</label><br>
+		</div>
 
 		<!-- Select Gender -->
-		<p>Gender<br>
+		<h3>Gender</h3>
+		<div class=option>
 			<!-- The input element must be followed by the label element, do not put another line in between -->
 			<input type="radio" class="gender" name="sex" id="boys">
 			<label for='Boys'>Boys</label><br>
 	 		<input type="radio" class="gender" name="sex" id="boys">
 			<label for='Girls'>Girls</label><br>
-		</p>
+		</div>
 
-		<p>School<br>
-			<select class="team" name="school">
+		<h3>School</h3>
+		<div class=option>
+			<select id="team" name="school">
 				<option value="Natick">Natick</option>
 				<option value="BC High">BC High</option>
 			</select>
-		</p>
+		</div>
 
+		<h3>Date</h3>
 		<!-- Select Race Date -->
-		<p>Date:<br>
+		<div class=option>
 			<input type='text' id='datepicker'/>
-		</p>
+		</div>
+	</div>
+
+	<div id='roster'>
+		<div class='clearfix'></div>
 
 		<!-- Racer board -->
 		<h2>Racers</h2>
 		<div id='racers'></div>
+		
 		<div class='clearfix'></div>
 
 		<!-- Bib number board -->
@@ -89,34 +137,10 @@
 		<!-- Roster actions -->
 		<input type='button' id='preview-roster' value="Preview Roster">
 		<input type='button' id='refresh-btn'    value='Start over'>
+<!-- 		<input type='button' id='export-table' value='Export'> -->
 	</div>
 	
-	<!-- Right side with the live preview -->
-	<div id='preview'>
-		<div id='canvas'>
-			<div id='title-report'>Title</div>
 
-		    <div id='roster-table-section'>
-			    <table id="roster-table" class="display" >
-				    <thead>
-						<tr>
-							<th>Bib Number</th>
-							<th>Racer</th>
-							<!-- <th>Time</th> -->
-						</tr>
-				    </thead>
-				    <tbody id='roster-table-body'>
-
-				    </tbody>
-			    </table>
-
-		    </div>
-
-		</div>
-		
-  	  <!-- Buttons -->
-	  <input type='button' id='print-btn' value='Export'>
-	</div>
 	
 </div>
 

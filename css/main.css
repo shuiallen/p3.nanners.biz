@@ -1,24 +1,50 @@
 /*-------------------------------------------------------------------------------------------------
 Layout
 -------------------------------------------------------------------------------------------------*/
+* {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
 #wrapper {
-	width:960px;
+	width: 960px;
 	margin:0px auto;
 }
 
 /* Left column */
 #controls {
-	width:425px;
+	width:100%;
+	height: 50%;
 	margin-right:50px;
-	float:left;
+	//float:left;
+	background: blue;
+}
+.option {
+/*    width:170px;
+    height:100px;
+    float:left;
+    margin:4px;
+    background-color:red;
+	background: white;
+	border:2px solid;
+	border-color: red;
+	position: relative;*/
 }
 
 /* Right column */
 #preview {
-	width:400px;
-	float:left;
+	width:800x;
+	height:500px;
 	text-align:center;
-        border:1px solid black;
+    border:1px solid black;
+    z-index: 999;
+    display:none;
+    position:absolute;
+    top:400px;
+    left:200px;
+    background:grey;
+	border-color: red;
 }
 
 
@@ -35,14 +61,12 @@ Roster
 }
 
 #canvas {
-
-	width:338px;
-	height:469px;
+	width:90%;
+	height:400px;
 	position:relative;
 	top:33px;
 	left:16px;
-	z-index:1; /* So we can place the stickers above */
-	overflow:hidden;
+	overflow:auto;
 }
 
 .clearfix:after {

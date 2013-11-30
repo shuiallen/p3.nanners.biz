@@ -1,3 +1,12 @@
+$(function() {
+    $( "#options" ).accordion( {
+    	collapsible: true,
+    	heightStyle: "content",
+		// event: "click hoverintent" - need to add hoverintent handler to use this feature
+    });
+  });
+
+
 /* Collect data from input actions
 */
 var gender = "";
@@ -89,6 +98,14 @@ $('#export-table').click(function() {
 	alert('print-btn clicked');
 });
 
+$('#close-preview').click(function() {
+		$('#preview').hide();
+});
+
+$('#print-table').click(function() {
+	alert('print-btn clicked');
+});
+
 
 // var myWindow = window.open("","MsgWindow","width=200,height=100");
 // myWindow.document.write($('#roster-table-section'));
@@ -104,7 +121,8 @@ $('#refresh-btn').click(function() {
 Preview Roster
 -------------------------------------------------------------------------------------------------*/
 $('#preview-roster').click(function() {
-
+	$('#preview').show();
+	$('#controls').blur();
 	school = $('#team').val();
 	console.log(school);
 
@@ -133,6 +151,7 @@ $('#preview-roster').click(function() {
     $(document).ready( function () {
 		$('#roster-table').dataTable();
 	});
+
 });
 
 
@@ -200,7 +219,7 @@ $('#remove-assignment').on("click", function() {
 *  Extra: Use formula for bib numbers based on school/gender/order {0-9}
 *  Extra: Record both boys and girls roster on the same page
 *  Assign a racer to a bib number using a click event handler
-*  Extra:  try to use dragging - attempted but is not necessarily more intuitive what to drag to to make a pair
+*  
 *  Remove an assignment - put the racer and bib number back, un-highlighted
 *  Display the roster in a table
 *  Extra: Export the roster to a csv
@@ -210,6 +229,7 @@ $('#remove-assignment').on("click", function() {
 *  Extra: Export the roster with race times to a csv
 *  Extra: Collate rosters from several schools
 *
+*  Extra:  try to use dragging - attempted but is not necessarily more intuitive what to drag to to make a pair
 */
 
 

@@ -1,6 +1,6 @@
 .racer {
-	width:40px;
-	height:40px;
+	width:70px;
+	height:20px;
 	border:1px solid grey;
 	float:left;
 	margin-right:5px;
@@ -8,14 +8,14 @@
 
 .bib {
 	width:40px;
-	height:40px;
+	height:20px;
 	border:1px solid grey;
 	margin-right:5px;
 	float:left;
 }
 
 .assignment {
-	width:60px;
+	width:80px;
 	height:120px;
 	border:2px solid grey;
 	float:left;
@@ -35,3 +35,8 @@ Name of Race
 
 .error {
 	color:red;
+}
+
+#export-table {
+	z-index:20;
+}
