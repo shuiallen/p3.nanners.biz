@@ -22,6 +22,19 @@
 	margin-right:10px;
 }
 
+
+#bibBoard {
+    border:1px solid black;
+    display:none;
+    position:absolute;
+}
+
+#assignBoard {
+    border:1px solid black;
+    display:none;
+    position:absolute;
+}
+
 /*-------------------------------------------------------------------------------------------------
 Name of Race
 -------------------------------------------------------------------------------------------------*/
