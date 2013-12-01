@@ -17,8 +17,6 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 	<script type="text/javascript" charset="utf-8" src="js/DataTables/media/js/jquery.dataTables.js"></script>
-
-
 </head>
 
 
@@ -26,9 +24,7 @@
 
 <div id='wrapper'>
 
-
 	<h1>Ski Team Roster Builder</h1>
-
 		<!-- Right side with the live preview -->
 	<div id='preview'>
 		<div id='canvas'>
@@ -49,16 +45,16 @@
 			    </table>
 
 		    </div>
+
+		    <!-- Buttons are inside the canvas, I can't get it to work with the buttons in the preview div --> 
 		    <div id=preview-buttons>
 				<!-- Buttons -->
 				<input type='button' id='export-table' value='Export'>
 				<input type='button' id='close-preview' value='Close Preview'>
 				<input type='button' id='print-table' value='Print'>
 			</div>
-		</div>
-		
-
-	</div>
+		</div>      <!-- end canvas div -->
+	</div>          <!-- end preview div -->
 
 	<div id='options'>
 
@@ -104,10 +100,9 @@
 		<div class=option>
 			<input type='text' id='datepicker'/>
 		</div>
-	</div>
+	</div>       <!-- end options div -->
 
 	<div id='roster'>
-		<div class='clearfix'></div>
 
 		<!-- Racer board -->
 		<h2>Racers</h2>
@@ -135,13 +130,14 @@
 		<br>
 		<!-- Roster actions -->
 		<input type='button' id='preview-roster' value="Preview Roster">
-		<input type='button' id='refresh-btn'    value='Start over'>
-<!-- 		<input type='button' id='export-table' value='Export'> -->
-	</div>
-	
+		<input type='button' id='refresh-btn'    value='Start over'
 
-	
-</div>
+		<div class='clearfix'></div>
+
+	</div>    <!-- end roster div -->
+</div>        <!-- end wrapper div -->
+
+<div class=clearfix></div>
 
 <script src="js/roster.js"></script>
 

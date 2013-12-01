@@ -1,45 +1,3 @@
-/**
-*
-* Jquery and Jquery UI features
-*	Options are in accordion sections
-*	Use of fadeout and fadein when racer and bibs are selected or unasssigned
-*	Click handlers for button operations
-*	Fill dropdown list conditionally based on option selection (gender/school)
-*	Use show/hide for roster preview (although some issues with layout and buttons)
-*   Use dataTable plugin to display roster in a table with sorting functions
-*
-* Minor issues/incomplete functionality
-*	I would spend more time on this but I want to get started on P4
-*	The preview roster layout is terrible, the buttons are not displaying correctly
-*	and I haven't had time to figure out how to print
-*
-* Roster Assignment Features
-*
-*  Setup the racer slots - racer names are still hardcoded
-*  Initialize bib and assignment board based on gender and school selection*
-*  
-*  Implemented actions:
-*      Select and deselect a racer
-*      Select and deselect a big number
-*      Assign a racer to a bib number using a click event handler, remove race and bib number from display
-*      Remove an assignment - put the racer and bib number back, un-highlighted
-*      Display the roster in a table - currently pops up, layout is not good
-*
-* Lots of ideas for more functionality, but would work better with a server and php framework
-* 		Record both boys and girls roster on the same page
-* 		Import a list of names into the roster
-* 		Export the roster to a csv
-*		Extend the tool to track race times
-*  		Import the roster from a csv, to be able to record race times
-*      	Submit race times for each racer/bib number
-*      	Display the roster and race times in a table
-*      	Export the roster with race times to a csv
-*      	Collate rosters from several schools
-*
-*  Extra:  try to use dragging
-*          attempted but is not necessarily more intuitive what to drag to to make a pair
-*/
-
 
 /*-------------------------------------------------------------------------------------------------
 Configure options display
@@ -50,10 +8,14 @@ $(function() {
     	heightStyle: "content",
 		// event: "click hoverintent" - need to add hoverintent handler to use this feature
     });
+
+	$(document).ready( function () {
+		$('#roster-table').dataTable();
+	});
 });
 
 /*-------------------------------------------------------------------------------------------------
- Variables to collect data from input actions
+ Global variables to collect data from input actions
 -------------------------------------------------------------------------------------------------*/
 var gender = "none";
 var dateObject = "";
@@ -68,9 +30,12 @@ var assignmentPick;
 
 // School and bib parameters - hard coded
 numBibs = 10;  // always 10 for now, not all are required to be assigned
+// Schools with girls and boys
 var schools = ['St Sebastian', 'Sacred Heart', 'Belmont High',
 				'Scituate', 'Hingham', 'Natick', 'Norwell', 'Needham'];
+// Girls only
 var girlsSchools = ['Notre Dame Academy'];
+// Boys only
 var boysSchools = ['BC High'];
 
 var girlsBibs = {
@@ -312,19 +277,17 @@ $('#preview-roster').click(function() {
 	$('#title-report').html(title);
 
 	// Clear table previously displayed
-	$('#roster-table > tbody').empty();
+	$('#roster-table').dataTable().fnClearTable();
 
 	// Iterate over the bib assignment divs to insert rows in the table body
 	$('#pairs').children('div').each(function () {
 		if ($(this).children().length > 0) {
 			var thisRacer = $(this).find(".racer").html();
 			var thisBib   = $(this).find(".bib").html();
-			$('#roster-table > tbody').append("<tr><td>" + thisBib + "</td><td>" + thisRacer + "</td></tr>");
+			$('#roster-table').dataTable().fnAddData( [
+				thisBib,
+				thisRacer]);
 		}
-	});
-
-    $(document).ready( function () {
-		$('#roster-table').dataTable();
 	});
 
 });
