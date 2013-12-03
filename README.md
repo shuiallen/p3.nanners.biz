@@ -13,13 +13,11 @@ Project 3 for CSCI-E15
 *   Print the roster table in a new tab ala Card-o-matic
 *
 * Minor issues/incomplete functionality
-*	I would spend more time on this but I want to get started on P4
-*	The preview roster layout is terrible, the buttons are not displaying correctly
-*	and I haven't had time to figure out how to print
+*	Racer names are still hardcoded. I would spend more time on this but I want to get started on P4
 *
 * Roster Assignment Features
 *
-*  Setup the racer slots - racer names are still hardcoded
+*  Setup the racer slots - 
 *  Initialize bib and assignment board based on gender and school selection
 *  
 *  Implemented actions:

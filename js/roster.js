@@ -130,7 +130,7 @@ function boardSetup() {
 	// Racers are currently hardcoded
 	bibs.show();
 	pairs.show();
-	$('#racer-bib').show();
+	$('#assign-error').html("");
 
 	// Setup click handlers to select a racer or a bib
 	$('.bib').on('click', function() {
