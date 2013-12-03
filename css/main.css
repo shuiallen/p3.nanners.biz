@@ -10,59 +10,55 @@ Layout
 #wrapper {
 	width: 960px;
 	margin:0px auto;
-		border: 1px solid green; /* tmp - so i can see where things end up */
 }
 
-/* Left column */
+/* Options container */
 #options {
 	width:360px;
 	margin-right:50px;
 	float:left;
-	background: blue;
-		border: 1px solid red; /* tmp - so i can see where things end up */
+	background: #CC0099;
+	border-radius: 10px;
+	border: 3px ;
+	//	border: 1px solid red; /* tmp - so i can see where things end up */
 }
+/* Roster board */
 #roster {
 	width:490px;
 	margin-right:50px;
 	float:left;
-	background: yellow;
-		border: 1px solid blue; /* tmp - so i can see where things end up */
+	background: #E8E8E8;
+	border: 3px solid #CC0099; /* tmp - so i can see where things end up */
+	border-radius: 10px;
 }
+
+/* Roster table in the preview */
 #roster-table-section  {
-		border: 1px solid blue; /* tmp - so i can see where things end up */
+	border: 1px solid white; /* tmp - so i can see where things end up */
 }
+
 #preview-buttons{
-	border: 1px solid black; /* tmp - so i can see where things end up */
+	border: 1px solid #CC0099; /* tmp - so i can see where things end up */
 /*	z-index: 999;*/
 	float:left;
 	width: 100%;
-}
-
-.option {
-/*    width:170px;
-    height:100px;
-    float:left;
-    margin:4px;
-    background-color:red;
-	background: white;
-	border:2px solid;
-	border-color: red;
-	position: relative;*/
+	border-radius:5px;
+	text-align: center;
+	margin-top: 20px;
 }
 
 /* Right column */
 #preview {
-
 	width:750px;
 	float:left;
 	text-align:center;
-    border:1px solid red;
+    border:1px solid #CC0099;
     z-index: 999;
     display:none;
     position:absolute;
     top:40px;
     left:200px;
-    background:grey;
+    background:#E8E8E8 ;
 /*	border-color: red;*/
 }
 
@@ -92,4 +88,12 @@ Roster
   content: "";
   display: table;
   clear: both;
+}
+
+input[type=button] {
+  border: 1px solid #63a62f;
+  border-bottom: 1px solid #5b992b;
+  border-radius: 3px;
+  background: #CC0099;
+  color: white;
 }

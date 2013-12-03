@@ -46,10 +46,11 @@
 
 		    </div>
 
+		    <br>
 		    <!-- Buttons are inside the canvas, I can't get it to work with the buttons in the preview div --> 
-		    <div id=preview-buttons>
+		    <div id='preview-buttons'>
 				<!-- Buttons -->
-				<input type='button' id='export-table' value='Export'>
+				<!-- <input type='button' id='export-table' value='Export'>  omitting for now -->
 				<input type='button' id='close-preview' value='Close Preview'>
 				<input type='button' id='print-table' value='Print'>
 			</div>
@@ -114,15 +115,12 @@
 		<h2>Available bib numbers</h2>
 		<div id='bibs' class=bibBoard></div>
 
-		<div class='clearfix'></div>
-
 		<input type='button' id='racer-bib' value="Set racer to bib">
 		<span class='error' id='assign-error'></span>
 
 		<!-- Assignment board -->
 		<h2>Assignments</h2>
 		<div id='pairs' class=assignBoard></div>
-		<div class='clearfix'></div>
 
 		<!-- Assignment action -->
 		<input type='button' id='remove-assignment' value="Undo Assignment">

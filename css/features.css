@@ -1,7 +1,7 @@
 .racer {
 	width:70px;
 	height:20px;
-	border:1px solid grey;
+	border:1px solid blue;
 	float:left;
 	margin-right:5px;
 }
@@ -9,7 +9,7 @@
 .bib {
 	width:40px;
 	height:20px;
-	border:1px solid grey;
+	border:1px solid blue;
 	margin-right:5px;
 	float:left;
 }
@@ -17,20 +17,20 @@
 .assignment {
 	width:80px;
 	height:60px;
-	border:2px solid grey;
+	border:2px solid blue;
 	float:left;
 	margin-right:10px;
 }
 
 
 #bibBoard {
-    border:1px solid black;
+    border:1px solid white;
     display:none;
     position:absolute;
 }
 
 #assignBoard {
-    border:1px solid black;
+    border:1px solid white;
     display:none;
     position:absolute;
 }

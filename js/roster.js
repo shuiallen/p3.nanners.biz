@@ -10,7 +10,9 @@ $(function() {
     });
 
 	$(document).ready( function () {
-		$('#roster-table').dataTable();
+		$('#roster-table').dataTable( {
+					"aaSorting": [[ 4, "asc" ]]
+				});
 	});
 });
 
@@ -70,6 +72,9 @@ id_of_bibsAssignmentDiv = "";
 boardGender = "";
 boardSchool = "";
 
+/*-------------------------------------------------------------------------------------------------
+Initialize the board based on gender and team
+-------------------------------------------------------------------------------------------------*/
 function boardSetup() {
 	var	bibs = $('#' + id_of_bibsDiv);
 	var pairs = $('#' + id_of_bibsAssignmentDiv);
@@ -98,8 +103,6 @@ function boardSetup() {
 		bibStart = girlsBibs[school];
 	}
 
-	console.log('start bibs at ' + bibStart);
-
 	// Setup the boards - bibs, assignment pairs
 	// Loop over bib numbers starting with BibStart
 	bibNum = bibStart;
@@ -127,10 +130,11 @@ function boardSetup() {
 	// Racers are currently hardcoded
 	bibs.show();
 	pairs.show();
+	$('#racer-bib').show();
 
 	// Setup click handlers to select a racer or a bib
 	$('.bib').on('click', function() {
-		bibPick = select_it($(this), bibPick, '2px solid blue', '1px solid grey');
+		bibPick = select_it($(this), bibPick, '2px solid blue', '1px solid blue');
 	});
 
 	$('#racer-bib').click(function() {
@@ -158,7 +162,7 @@ function boardSetup() {
 	Select an assignment
 	-------------------------------------------------------------------------------------------------*/
 	$('.assignment').click(function() {
-		assignmentPick = select_it($(this), assignmentPick, '3px solid green', '2px solid grey');
+		assignmentPick = select_it($(this), assignmentPick, '3px solid green', '2px solid blue');
 	});
 
 }
@@ -233,14 +237,14 @@ $("#datepicker").datepicker(
 {
     onSelect: function()
     { 
-        dateObject = $(this).datepicker('getDate'); 
-        console.log(dateObject);
+        var datexxx = $(this).datepicker('getDate'); 
+        dateObject = $.datepicker.formatDate( "yy-mm-dd", datexxx );
     }
 });
 
 
 /*-------------------------------------------------------------------------------------------------
-Export the Roster event handler
+Export the Roster event handler - not implemented
 -------------------------------------------------------------------------------------------------*/
 $('#export-table').click(function() {
 	alert('export-btn clicked');
@@ -250,19 +254,54 @@ $('#export-table').click(function() {
 Close the preview window
 -------------------------------------------------------------------------------------------------*/
 $('#close-preview').click(function() {
-		$('#preview').hide();
+	$('#preview').hide();
 });
 
 /*-------------------------------------------------------------------------------------------------
 Print the Roster event handler
 -------------------------------------------------------------------------------------------------*/
 $('#print-table').click(function() {
-	alert('print-btn clicked');
+
+	// Goal: Open the roster table in a new tab that can be printed
+   
+    // Take the existing card on the page (in the #canvas div) and clone it for the new tab
+    var table_clone = $('#roster-table').clone();
+    var title_clone = $('#title-report').clone();
+        
+    // Get the title and the table
+    var table = table_clone.prop('outerHTML');
+    var title = title_clone.prop('outerHTML');
+    
+    // For the new tab, we need to basically construct all the pieces we need for any HTML page starting with a start <html> tag.
+    var new_tab_contents  = '<html>';
+    
+    // (Note the += symbol is used to add content onto an existing variable, so basically we're just adding onto our new_tab_contents variable one line at a time)
+    new_tab_contents += '<head>';
+    new_tab_contents += '<link rel="stylesheet" href="css/main.css" type="text/css">'; // Don't forget your CSS so the card looks good in the new tab!
+    new_tab_contents += '<link rel="stylesheet" href="css/features.css" type="text/css">';
+    new_tab_contents += '</head>';
+    new_tab_contents += '<body>'; 
+    new_tab_contents += title; 
+        new_tab_contents += table; 
+    new_tab_contents += '</body></html>';
+    
+	// Ok, our card is ready to go, we just need to work on opening the tab
+    
+    // Here's how we tell JavaScript to create a new tab (tabs are controlled by the "window" object).
+    var new_tab =  window.open();
+
+	// Now within that tab, we want to open access to the document so we can make changes
+    new_tab.document.open();
+    
+    // Here's the change we'll make: we'll write our card (i.e., new_tab_contents) to the document of the tab
+    new_tab.document.write(new_tab_contents);
+    
+    // Then close the tab. This isn't actually closing the tab, it's just closing JS's ability to talk to it.
+    // It's kind of like when you're talking to a walkie-talkie and you say "over and out" to communicate you're done talking
+    new_tab.document.close();
+    		
 });
 
-$('#refresh-btn').click(function() {
-	alert('refresh-btn clicked');
-});
 
 
 /*-------------------------------------------------------------------------------------------------
@@ -292,21 +331,30 @@ $('#preview-roster').click(function() {
 
 });
 
+/*-------------------------------------------------------------------------------------------------
+Undo All Assignments
+-------------------------------------------------------------------------------------------------*/
+$('#refresh-btn').click(function() {
+	var pairs = $('#' + id_of_bibsAssignmentDiv);
+
+	// Get all assignments
+	// Restore each racer and bib
+	// Empty the assignments and start over
+	var assignments = pairs.children();
+	$(assignments).each(function () {
+		restore($(this));
+	});
+	// Clear the picks
+	racerPick = null;
+	bibPick = null;
+	assignmentPick = null;
+});
 
 /*-------------------------------------------------------------------------------------------------
-Undo Assignment
+Restore racer and bib
 -------------------------------------------------------------------------------------------------*/
-// Event handler for the remove assignment
-$('#remove-assignment').on("click", function() {
-	// Clear any previous error message
-	$('#remove-error').html("");
-
-	if ((assignmentPick == undefined) ||jQuery.isEmptyObject(assignmentPick) ) {
-		$('#remove-error').html("Pick an assignment");
-		return;
-	}
-
-	var pair   = assignmentPick.children();
+function restore(pick) {
+	var pair   = pick.children();
 	console.log($(pair));
 	var BibId;
 	var RacerId;
@@ -325,19 +373,37 @@ $('#remove-assignment').on("click", function() {
 	racerPick = $('#' + racerId);
 	bibPick = $('#' + bibId);
 	$('#' + racerId).fadeIn(300);
-	$('#' + racerId).css('border', '1px solid grey');
+	$('#' + racerId).css('border', '1px solid blue');
 	$('#' + bibId).fadeIn(300);
-	$('#' + bibId).css('border', '1px solid grey');
+	$('#' + bibId).css('border', '1px solid blue');
 
 	// Clear out the assignment div - remove content, highlighting, and assignment class
-	assignmentPick.empty();
-	assignmentPick.css('border', '2px solid grey');
-	assignmentPick.removeClass('assigned');
-	assignmentPick.addClass('unassigned');
+	pick.empty();
+	pick.css('border', '2px solid blue');
+	pick.removeClass('assigned');
+	pick.addClass('unassigned');
+}
+
+/*-------------------------------------------------------------------------------------------------
+Undo Assignment
+-------------------------------------------------------------------------------------------------*/
+// Event handler for the remove assignment
+$('#remove-assignment').on("click", function() {
+	// Clear any previous error message
+	$('#remove-error').html("");
+
+	if ((assignmentPick == undefined) ||jQuery.isEmptyObject(assignmentPick) ) {
+		$('#remove-error').html("Pick an assignment");
+		return;
+	}
+	if (assignmentPick.children().length == 0) {
+		$('#remove-error').html("Nothing to unassign");
+		return;
+	}
+
+	restore(assignmentPick);
 	// Deselect the pick
 	assignmentPick = null;
-
-	console.log($('#pairs'));
 });
 
 /*-------------------------------------------------------------------------------------------------
@@ -399,8 +465,6 @@ function assign_a_bib(racerObj, bibObj) {
 	$(availToAssign).removeClass('unassigned');
 	$(availToAssign).addClass('assigned');
 
-	console.log($('#pairs'));
-
 	// make the chosen ones disappear
 	racerObj.fadeOut(300);
 	bibObj.fadeOut(300);
@@ -442,8 +506,6 @@ function populateSchool() {
 *
 **/
 var Roster = {
-
-
 	// HTML objects
 	racers: '',
 
@@ -460,7 +522,7 @@ var Roster = {
 
 		// Setup click handlers to select a racer or a bib
 		$('.racer').on('click', function() {
-			racerPick = select_it($(this), racerPick, '2px solid red', '1px solid grey');
+			racerPick = select_it($(this), racerPick, '2px solid red', '1px solid blue');
 		});
 
 		id_of_bibsDiv = id_of_bibs;
