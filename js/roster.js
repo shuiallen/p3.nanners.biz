@@ -416,9 +416,9 @@ function restore(pick) {
 	racerPick = $('#' + racerId);
 	bibPick = $('#' + bibId);
 	$('#' + racerId).fadeIn(300);
-	$('#' + racerId).css('border', '1px solid blue');
+	$('#' + racerId).css('border', '2px solid red');
 	$('#' + bibId).fadeIn(300);
-	$('#' + bibId).css('border', '1px solid blue');
+	$('#' + bibId).css('border', '2px solid blue');
 
 	// Clear out the assignment div - remove content, highlighting, and assignment class
 	pick.empty();
