@@ -13,7 +13,8 @@ Project 3 for CSCI-E15
 *   Print the roster table in a new tab ala Card-o-matic
 *
 * Minor issues/incomplete functionality
-*	Racer names are still hardcoded. I would spend more time on this but I want to get started on P4
+*	Racer names are hardcoded.  I didn't implement with a PHP framework and DB - ideally the hardcoded data
+*   would be retrieved from the server. I would spend more time on this but I want to get started on P4
 *
 * Roster Assignment Features
 *
@@ -29,8 +30,8 @@ Project 3 for CSCI-E15
 *      Remove all the assignments and start over for this school
 *
 * Lots of ideas for more functionality, but would work better with a server and php framework
-*		Assign racer to bib button should be hidden until the bib number are put on the board
-* 		Record both boys and girls roster on the same page
+*		Assign racer to bib button could be hidden until the racers & bib numbers are put on the board
+* 		Record both boys and girls rosters on the same page
 * 		Import a list of names into the roster
 * 		Export the roster to a csv
 *		Extend the tool to track race times (this is really what I want this application to do)

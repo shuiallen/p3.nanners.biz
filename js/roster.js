@@ -64,9 +64,33 @@ var boysBibs = {
 	'Needham' : 310
 };
 
+var girlsBySchool = {
+	'Notre Dame Academy' : ['nda-g1', 'nda-g2', 'nda-g3', 'nda-g4', 'nda-g5', 'nda-g6', 'nda-g7', 'nda-g8', 'nda-g9', 'nda-g10'],
+	'St Sebastian' : ['stseb-g1', 'stseb-g2', 'stseb-g3', 'stseb-g4', 'stseb-g5', 'stseb-g6', 'stseb-g7', 'stseb-g8', 'stseb-g9', 'stseb-g10'],
+	'Sacred Heart' : ['sch-g1', 'sch-g2', 'sch-g3', 'sch-g4', 'sch-g5', 'sch-g6', 'sch-g7', 'sch-g8', 'sch-g9', 'sch-g10'],
+	'Belmont High' : ['bel-g1', 'bel-g2', 'bel-g3', 'bel-g4', 'bel-g5', 'bel-g6', 'bel-g7', 'bel-g8', 'bel-g9', 'bel-g10'],
+	'Scituate' : ['sci-g1', 'sci-g2', 'sci-g3', 'sci-g4', 'sci-g5', 'sci-g6', 'sci-g7', 'sci-g8', 'sci-g9', 'sci-g10'],
+	'Hingham' : ['h-g1', 'hgm-g2', 'hgm-g3', 'hgm-g4', 'hgm-g5', 'hgm-g6', 'hgm-g7', 'hgm-g8', 'hgm-g9', 'hgm-g10'],
+	'Natick' : ['nat-g1', 'nat-g2', 'nat-g3', 'nat-g4', 'nat-g5', 'nat-g6', 'nat-g7', 'nat-g8', 'nat-g9', 'nda-g10'],
+	'Norwell' : ['nor-g1', 'nor-g2', 'nor-g3', 'nor-g4', 'nor-g5', 'nor-g6', 'nor-g7', 'nor-g8', 'nor-g9', 'nor-g10'],
+	'Needham' : ['ndh-g1', 'ndh-g2', 'ndh-g3', 'ndh-g4', 'ndh-g5', 'ndh-g6', 'ndh-g7', 'ndh-g8', 'ndh-g9', 'nda-g10']
+};
+
+var boysBySchool = {
+	'BC High' : ['bch-b1', 'bch-b2', 'bch-b3', 'bch-b4', 'bch-b5', 'bch-b6', 'bch-b7', 'bch-b8', 'bch-b9', 'bch-b10'],
+	'St Sebastian' : ['stseb-b1', 'stseb-b2', 'stseb-b3', 'stseb-b4', 'stseb-b5', 'stseb-b6', 'stseb-b7', 'stseb-b8', 'stseb-b9', 'stseb-b10'],
+	'Sacred Heart' : ['sch-b1', 'sch-b2', 'sch-b3', 'sch-b4', 'sch-b5', 'sch-b6', 'sch-b7', 'sch-b8', 'sch-b9', 'sch-b10'],
+	'Belmont High' : ['bel-b1', 'bel-b2', 'bel-b3', 'bel-b4', 'bel-b5', 'bel-b6', 'bel-b7', 'bel-b8', 'bel-b9', 'bel-b10'],
+	'Scituate' : ['sci-b1', 'sci-b2', 'sci-b3', 'sci-b4', 'sci-b5', 'sci-b6', 'sci-b7', 'sci-b8', 'sci-b9', 'sci-b10'],
+	'Hingham' : ['h-b1', 'hgm-b2', 'hgm-b3', 'hgm-b4', 'hgm-b5', 'hgm-b6', 'hgm-b7', 'hgm-b8', 'hgm-b9', 'hgm-b10'],
+	'Natick' : ['nat-b1', 'nat-b2', 'nat-b3', 'nat-b4', 'nat-b5', 'nat-b6', 'nat-b7', 'nat-b8', 'nat-b9', 'nda-b10'],
+	'Norwell' : ['nor-b1', 'nor-b2', 'nor-b3', 'nor-b4', 'nor-b5', 'nor-b6', 'nor-b7', 'nor-b8', 'nor-b9', 'nor-b10'],
+	'Needham' : ['ndh-b1', 'ndh-b2', 'ndh-b3', 'ndh-b4', 'ndh-b5', 'ndh-b6', 'ndh-b7', 'ndh-b8', 'ndh-b9', 'nda-b10']
+};
 // div names
-id_of_bibsDiv = "";
-id_of_bibsAssignmentDiv = "";
+id_of_racers = "racers";
+id_of_bibsDiv = "bibs";
+id_of_bibsAssignmentDiv =  "pairs";
 
 // track constructed board
 boardGender = "";
@@ -76,8 +100,9 @@ boardSchool = "";
 Initialize the board based on gender and team
 -------------------------------------------------------------------------------------------------*/
 function boardSetup() {
-	var	bibs = $('#' + id_of_bibsDiv);
-	var pairs = $('#' + id_of_bibsAssignmentDiv);
+	var	bibs    = $('#' + id_of_bibsDiv);
+	var pairs   = $('#' + id_of_bibsAssignmentDiv);
+	var racers  = $('#' + id_of_racers);
 
 	// If any selection doesn't match, we have to clear the board
 	if (gender != boardGender || school != boardSchool) {
@@ -95,6 +120,7 @@ function boardSetup() {
 	// Populate the bib number board and assignment boards
 	var bibsStr = String();
 	var pairStr = String();
+	var racersStr = String();
 
 	var bibStart;
 	if (gender == 'Boys') {
@@ -118,9 +144,21 @@ function boardSetup() {
 		pairStr += "<div class='assignment clickable unassigned' id='assign" + i + "'></div>";
 	}
 
-	// Inject strings into its board
+	var racerNames;
+	if (gender == 'Boys') {
+		racerNames = boysBySchool[school];
+	} else {
+		racerNames = girlsBySchool[school];
+	}
+	for (var i = 0; i < racerNames.length; i++)	 {
+		// Initialize the racer cards
+		racersStr += "<div class='racer clickable' id='racer" + i + "'>" + racerNames[i] + "</div>"
+	}
+
+	// Inject strings into each board
 	bibs.html(bibsStr);
 	pairs.html(pairStr);
+	racers.html(racersStr);
 
 	// Record which school and gender is being displayed
 	boardGender = gender;
@@ -135,6 +173,11 @@ function boardSetup() {
 	// Setup click handlers to select a racer or a bib
 	$('.bib').on('click', function() {
 		bibPick = select_it($(this), bibPick, '2px solid blue', '1px solid blue');
+	});
+
+	// Setup click handlers to select a racer or a bib
+	$('.racer').on('click', function() {
+		racerPick = select_it($(this), racerPick, '2px solid red', '1px solid blue');
 	});
 
 	$('#racer-bib').click(function() {
@@ -498,36 +541,3 @@ function populateSchool() {
 	}
 }
 
-/**
-*
-* Roster Board
-* @class Roster
-* @constructor setup
-*
-**/
-var Roster = {
-	// HTML objects
-	racers: '',
-
-	setup: function(id_of_racers, id_of_bibs, id_of_pairs, racerNames) {
-		// Setup the racers board
-		this.racers = $('#' + id_of_racers);
-		var racersStr = String();
-		for (var i = 0; i < racerNames.length; i++)	 {
-			// Initialize the racer cards
-			racersStr += "<div class='racer clickable' id='racer" + i + "'>" + racerNames[i] + "</div>"
-		}
-		// Inject racer strings into its board
-		this.racers.html(racersStr);
-
-		// Setup click handlers to select a racer or a bib
-		$('.racer').on('click', function() {
-			racerPick = select_it($(this), racerPick, '2px solid red', '1px solid blue');
-		});
-
-		id_of_bibsDiv = id_of_bibs;
-		id_of_bibsAssignmentDiv = id_of_pairs;
-
-	},  // end of function
-
-}; // eoc
