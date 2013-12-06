@@ -354,7 +354,7 @@ $('#preview-roster').click(function() {
 	$('#controls').blur();
 	school = $('#team').val();
 
-	var title = gender + " " + racetype + " at " + site + " - " + school + " - " + dateObject
+	var title = school + " "+ gender + " " + racetype + " at " + site + " - " + dateObject
 	$('#title-report').html(title);
 
 	// Clear table previously displayed

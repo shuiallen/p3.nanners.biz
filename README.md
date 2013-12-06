@@ -41,7 +41,3 @@ Project 3 for CSCI-E15
 *      	Export the roster with race times to a csv
 *      	Collate rosters from several schools
 *  
-* Fancier matching:
-*     Attempted to use dragging but the action is not necessarily more intuitive or usable to make a pair
-*         If I used slots 1-10 for assignment and computed the bib number based on school, it might make more sense
-*         There is a formula for bib numbers, based on school, gender, rank, that can be computed
