@@ -82,7 +82,7 @@ var boysBySchool = {
 	'Sacred Heart' : ['sch-b1', 'sch-b2', 'sch-b3', 'sch-b4', 'sch-b5', 'sch-b6', 'sch-b7', 'sch-b8', 'sch-b9', 'sch-b10'],
 	'Belmont High' : ['bel-b1', 'bel-b2', 'bel-b3', 'bel-b4', 'bel-b5', 'bel-b6', 'bel-b7', 'bel-b8', 'bel-b9', 'bel-b10'],
 	'Scituate' : ['sci-b1', 'sci-b2', 'sci-b3', 'sci-b4', 'sci-b5', 'sci-b6', 'sci-b7', 'sci-b8', 'sci-b9', 'sci-b10'],
-	'Hingham' : ['h-b1', 'hgm-b2', 'hgm-b3', 'hgm-b4', 'hgm-b5', 'hgm-b6', 'hgm-b7', 'hgm-b8', 'hgm-b9', 'hgm-b10'],
+	'Hingham' : ['hgm-b1', 'hgm-b2', 'hgm-b3', 'hgm-b4', 'hgm-b5', 'hgm-b6', 'hgm-b7', 'hgm-b8', 'hgm-b9', 'hgm-b10'],
 	'Natick' : ['nat-b1', 'nat-b2', 'nat-b3', 'nat-b4', 'nat-b5', 'nat-b6', 'nat-b7', 'nat-b8', 'nat-b9', 'nda-b10'],
 	'Norwell' : ['nor-b1', 'nor-b2', 'nor-b3', 'nor-b4', 'nor-b5', 'nor-b6', 'nor-b7', 'nor-b8', 'nor-b9', 'nor-b10'],
 	'Needham' : ['ndh-b1', 'ndh-b2', 'ndh-b3', 'ndh-b4', 'ndh-b5', 'ndh-b6', 'ndh-b7', 'ndh-b8', 'ndh-b9', 'nda-b10']
@@ -227,7 +227,6 @@ $('.gender').click(function() {
 	 // Handle special cases for schools based on gender
 	populateSchool();
 
-	 console.log(gender);
 	 // Determine if we need to setup or change the board
 	 boardSetup();
 });
@@ -398,7 +397,6 @@ Restore racer and bib
 -------------------------------------------------------------------------------------------------*/
 function restore(pick) {
 	var pair   = pick.children();
-	console.log($(pair));
 	var BibId;
 	var RacerId;
 	$(pair).each(function () {
@@ -413,13 +411,8 @@ function restore(pick) {
 		}
 	});
 
-	racerPick = $('#' + racerId);
-	bibPick = $('#' + bibId);
-	$('#' + racerId).fadeIn(300);
-	$('#' + racerId).css('border', '2px solid red');
 	$('#' + bibId).fadeIn(300);
-	$('#' + bibId).css('border', '2px solid blue');
-
+	$('#' + racerId).fadeIn(300);
 	// Clear out the assignment div - remove content, highlighting, and assignment class
 	pick.empty();
 	pick.css('border', '2px solid blue');
@@ -487,23 +480,23 @@ function assign_a_bib(racerObj, bibObj) {
 
 	var racerId = racerObj.attr('id');
 	var bibId   = bibObj.attr('id');
+	racerObj.css('border', '1px solid blue');
+	bibObj.css('border', '1px solid blue');
 
 	// clone the chosen ones and change their ids
-	var racerChosen = racerObj.clone().attr('id', "clone-" + racerId);
-	var bibChosen   =   bibObj.clone().attr('id', "clone-" + bibId);
-	racerChosen.removeClass('clickable');
-	bibChosen.removeClass('clickable');
+	var racerClone = racerObj.clone().attr('id', "clone-" + racerId);
+	var bibClone   =   bibObj.clone().attr('id', "clone-" + bibId);
+	racerClone.removeClass('clickable');
+	bibClone.removeClass('clickable');
 
 	var racerStr = "<div class='racer' id=" + racerId + "'>" + racerId + "</div>";
 	var	bibStr   = "<div class='bib' id="   + bibId   + "'>" + bibId + "</div>";
 
 	// Find the first available div in pairs
 	var availToAssign = $('#pairs').children(".unassigned").eq(0);
-	console.log("div to assign");
-	console.log(availToAssign);
 
-	$(availToAssign).prepend(bibChosen);
-	$(availToAssign).prepend(racerChosen);
+	$(availToAssign).prepend(bibClone);
+	$(availToAssign).prepend(racerClone);
 
 	$(availToAssign).removeClass('unassigned');
 	$(availToAssign).addClass('assigned');
@@ -530,12 +523,12 @@ function populateSchool() {
 	}
 	if (gender == 'Girls') {
 		for (var i = 0; i < girlsSchools.length; i++) {
-			var sch = "<option value='"+ schools[i] + "'>" + girlsSchools[i] + "</option>";
+			var sch = "<option value='"+ girlsSchools[i] + "'>" + girlsSchools[i] + "</option>";
 			schoolSelect.append(sch);
 		}
 	} else {
 		for (var i = 0; i < boysSchools.length; i++) {
-			var sch = "<option value='"+ schools[i] + "'>" + boysSchools[i] + "</option>";
+			var sch = "<option value='"+ boysSchools[i] + "'>" + boysSchools[i] + "</option>";
 			schoolSelect.append(sch);
 		}
 	}
