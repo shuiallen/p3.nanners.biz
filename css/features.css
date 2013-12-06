@@ -4,6 +4,7 @@
 	border:1px solid blue;
 	float:left;
 	margin-right:5px;
+	cursor:pointer;
 }
 
 .bib {
@@ -12,6 +13,7 @@
 	border:1px solid blue;
 	margin-right:5px;
 	float:left;
+	cursor:pointer;
 }
 
 .assignment {
@@ -20,6 +22,7 @@
 	border:2px solid white;
 	float:left;
 	margin-right:10px;
+	cursor:pointer;
 }
 
 
