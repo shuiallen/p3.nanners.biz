@@ -415,7 +415,7 @@ function restore(pick) {
 	$('#' + racerId).fadeIn(300);
 	// Clear out the assignment div - remove content, highlighting, and assignment class
 	pick.empty();
-	pick.css('border', '2px solid blue');
+	pick.css('border', '2px solid white');
 	pick.removeClass('assigned');
 	pick.addClass('unassigned');
 }
